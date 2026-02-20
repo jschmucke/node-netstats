@@ -16,7 +16,7 @@ Este monorepo contiene:
   - `api/` — Fork de [cubedro/eth-net-intelligence-api](https://github.com/cubedro/eth-net-intelligence-api)
   - `webstats/` — Fork de [cubedro/eth-netstats](https://github.com/cubedro/eth-netstats)
 
-Los directorios `api/` y `webstats/` mantienen sus propios repositorios git como submódulos o directorios independientes para preservar el historial de los forks originales.
+Los directorios `api/` y `webstats/` ahora son parte del monorepo principal. Los repositorios git originales fueron consolidados en este repositorio único.
 
 ## Configuración Inicial del Repositorio
 
@@ -36,20 +36,13 @@ git remote add origin https://github.com/TU_USUARIO/node-netstats.git
 git remote add origin git@github.com:TU_USUARIO/node-netstats.git
 ```
 
-### 3. Verificar remotes de los forks originales
-
-Los directorios `api/` y `webstats/` mantienen sus propios remotes:
+### 3. Verificar que todo está listo
 
 ```bash
-# Ver remote de api/
-cd api
-git remote -v
-# Debería mostrar: origin https://github.com/cubedro/eth-net-intelligence-api
+# Ver el estado del repositorio
+git status
 
-# Ver remote de webstats/
-cd ../webstats
-git remote -v
-# Debería mostrar: origin https://github.com/cubedro/eth-netstats
+# Deberías ver todos los archivos listos para commit, incluyendo api/ y webstats/
 ```
 
 ### 4. Primer commit y push
@@ -77,36 +70,13 @@ git push -u origin main
 
 ## Manejo de los Repositorios Legacy
 
-Los directorios `api/` y `webstats/` tienen sus propios repositorios git. Tienes dos opciones:
+Los directorios `api/` y `webstats/` ahora son parte del monorepo principal. Los repositorios git originales fueron consolidados en este repositorio único.
 
-### Opción A: Mantener como directorios independientes (recomendado)
+**Repositorios originales de referencia:**
+- `api/` → Fork de `https://github.com/cubedro/eth-net-intelligence-api`
+- `webstats/` → Fork de `https://github.com/cubedro/eth-netstats`
 
-Los `.git` de `api/` y `webstats/` se mantienen separados. Esto preserva el historial completo de los forks originales.
-
-**Ventajas:**
-- Historial completo preservado
-- Fácil sincronización con los forks originales si es necesario
-- Separación clara entre código legacy y moderno
-
-**Desventajas:**
-- Git en la raíz no rastrea cambios dentro de `api/` y `webstats/`
-- Necesitas hacer commits separados si modificas código legacy
-
-### Opción B: Convertir en submódulos de Git
-
-Si prefieres que Git maneje explícitamente estos como submódulos:
-
-```bash
-# Eliminar los .git de api/ y webstats/
-rm -rf api/.git webstats/.git
-
-# Agregar como submódulos (si quieres mantenerlos como referencias externas)
-# Nota: Esto requiere que los repos estén en GitHub primero
-git submodule add https://github.com/cubedro/eth-net-intelligence-api api
-git submodule add https://github.com/cubedro/eth-netstats webstats
-```
-
-**Recomendación:** Mantener como directorios independientes (Opción A) ya que el código legacy no se modifica activamente.
+Estos directorios se mantienen solo como referencia histórica. El código activo está en `packages/`.
 
 ## Licencia
 

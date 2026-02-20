@@ -83,34 +83,15 @@ git push -u origin main
 
 ### Sobre los repositorios legacy (`api/` y `webstats/`)
 
-Estos directorios mantienen sus propios repositorios git con sus remotes originales:
+Los directorios `api/` y `webstats/` ahora son parte del monorepo principal. Los repositorios git originales fueron consolidados en este repositorio único.
 
-- `api/` → `https://github.com/cubedro/eth-net-intelligence-api`
-- `webstats/` → `https://github.com/cubedro/eth-netstats`
+**Repositorios originales de referencia:**
+- `api/` → Fork de `https://github.com/cubedro/eth-net-intelligence-api`
+- `webstats/` → Fork de `https://github.com/cubedro/eth-netstats`
 
-**Esto es intencional** para preservar el historial completo de los forks originales.
+Estos directorios se mantienen solo como referencia histórica. El código activo está en `packages/`.
 
-El repositorio principal en la raíz **no rastrea** los cambios dentro de `api/` y `webstats/` porque tienen sus propios `.git/`. Esto está bien porque:
-
-1. El código legacy no se modifica activamente
-2. Se mantiene el historial completo de los forks originales
-3. El código activo está en `packages/`
-
-### Si necesitas actualizar los forks legacy
-
-Si en el futuro necesitas sincronizar con los forks originales:
-
-```bash
-# Para api/
-cd api
-git fetch origin
-git merge origin/master  # o la rama que corresponda
-
-# Para webstats/
-cd ../webstats
-git fetch origin
-git merge origin/master  # o la rama que corresponda
-```
+**Nota:** Si necesitas consultar el historial completo de los forks originales, puedes hacerlo directamente en los repositorios de GitHub mencionados arriba.
 
 ## 🔗 Enlaces útiles
 
