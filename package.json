@@ -1,0 +1,35 @@
+{
+  "name": "node-netstats",
+  "private": true,
+  "packageManager": "pnpm@10.30.0",
+  "scripts": {
+    "dev:api":   "pnpm --filter @eth-netstats/api dev",
+    "dev:agent": "pnpm --filter @eth-netstats/agent dev",
+    "dev:web":   "pnpm --filter @eth-netstats/web dev",
+    "build":     "pnpm --filter @eth-netstats/types build && pnpm --filter @eth-netstats/api build && pnpm --filter @eth-netstats/agent build && pnpm --filter @eth-netstats/web build",
+    "build:api":   "pnpm --filter @eth-netstats/api build",
+    "build:agent": "pnpm --filter @eth-netstats/agent build",
+    "build:web":   "pnpm --filter @eth-netstats/web build",
+    "start:api":   "pnpm --filter @eth-netstats/api start",
+    "start:agent": "pnpm --filter @eth-netstats/agent start",
+    "lint":   "eslint . --ext .ts,.tsx",
+    "format": "prettier --write \"**/*.{ts,tsx,json}\""
+  },
+  "devDependencies": {
+    "@typescript-eslint/eslint-plugin": "^7.0.0",
+    "@typescript-eslint/parser": "^7.0.0",
+    "eslint": "^8.57.0",
+    "eslint-config-prettier": "^9.1.0",
+    "eslint-plugin-react": "^7.34.0",
+    "eslint-plugin-react-hooks": "^4.6.0",
+    "prettier": "^3.2.5",
+    "typescript": "^5.4.5"
+  },
+  "engines": {
+    "node": ">=20.0.0",
+    "pnpm": ">=9.0.0"
+  },
+  "pnpm": {
+    "onlyBuiltDependencies": ["@nestjs/core", "esbuild"]
+  }
+}

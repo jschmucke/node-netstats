@@ -1,0 +1,59 @@
+version: '3.9'
+
+services:
+  api:
+    build:
+      context: .
+      dockerfile: packages/api/Dockerfile
+    restart: unless-stopped
+    environment:
+      - NODE_ENV=production
+      - PORT=3000
+      - WS_SECRET=${WS_SECRET}
+      - ALLOWED_ORIGINS=${ALLOWED_ORIGINS:-http://localhost:8080}
+      - TRUSTED_IPS=${TRUSTED_IPS:-}
+      - BANNED_IPS=${BANNED_IPS:-}
+      - NETWORK_CHAIN_ID=${NETWORK_CHAIN_ID:-1}
+    ports:
+      - '3000:3000'
+    networks:
+      - netstats
+
+  web:
+    build:
+      context: .
+      dockerfile: packages/web/Dockerfile
+    restart: unless-stopped
+    environment:
+      - VITE_API_URL=${VITE_API_URL:-http://localhost:3000}
+    ports:
+      - '8080:80'
+    depends_on:
+      - api
+    networks:
+      - netstats
+
+  agent:
+    build:
+      context: .
+      dockerfile: packages/agent/Dockerfile
+    restart: unless-stopped
+    environment:
+      - NODE_ENV=production
+      - WS_SERVER=http://api:3000
+      - WS_SECRET=${WS_SECRET}
+      - RPC_URL=${RPC_URL:-}
+      - RPC_HOST=${RPC_HOST:-host.docker.internal}
+      - RPC_PORT=${RPC_PORT:-8545}
+      - INSTANCE_NAME=${INSTANCE_NAME:-my-node}
+      - CONTACT_DETAILS=${CONTACT_DETAILS:-}
+    depends_on:
+      - api
+    extra_hosts:
+      - 'host.docker.internal:host-gateway'
+    networks:
+      - netstats
+
+networks:
+  netstats:
+    driver: bridge
