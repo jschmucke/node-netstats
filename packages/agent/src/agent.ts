@@ -435,13 +435,28 @@ export class Agent {
     this._lastStats = JSON.stringify(this.stats);
 
     try {
-      const [peerCountHex, mining, hashrateHex, syncing, feeData] = await Promise.all([
+      const [peerCountHex, syncing, feeData] = await Promise.all([
         this.provider.send('net_peerCount', []),
-        this.provider.send('eth_mining', []),
-        this.provider.send('eth_hashrate', []),
         this.provider.send('eth_syncing', []),
         this.provider.getFeeData().catch(() => null),
       ]);
+
+      let mining = false;
+      let hashrateHex = '0x0';
+
+      if (config.nodeConsensus !== 'pos') {
+        const [miningResult, hashrateResult] = await Promise.all([
+          this.provider
+            .send('eth_mining', [])
+            .catch(() => false),
+          this.provider
+            .send('eth_hashrate', [])
+            .catch(() => '0x0'),
+        ]);
+
+        mining = Boolean(miningResult);
+        hashrateHex = typeof hashrateResult === 'string' ? hashrateResult : '0x0';
+      }
 
       this._tries++;
       this.stats.active = true;
@@ -470,9 +485,18 @@ export class Agent {
       this.setUptime();
       this.sendStatsUpdate(forced);
     } catch (err) {
-      console.error('[RPC] getStats error:', err);
-      this._down++;
-      this.setInactive();
+      const isTimeout =
+        err instanceof Error &&
+        ('code' in err ? (err as { code?: string }).code === 'TIMEOUT' : false);
+      if (isTimeout) {
+        if (config.verbosity >= 2) {
+          console.warn('[RPC] getStats timeout, skipping this cycle');
+        }
+      } else {
+        console.error('[RPC] getStats error:', err);
+        this._down++;
+        this.setInactive();
+      }
     }
   }
 

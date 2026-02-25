@@ -10,12 +10,13 @@ export function DashboardPage() {
   const { isLoading } = useInitialData();
 
   const { nodes, bestBlock, nodesActive, nodesTotal } = useNodesStore();
+  const appTitle = import.meta.env.VITE_APP_TITLE ?? 'Network Stats';
 
   return (
     <div className="max-w-screen-2xl mx-auto px-4 py-6">
       {/* Header */}
       <header className="mb-6">
-        <h1 className="text-2xl font-bold text-gray-100">Eth Network Stats</h1>
+        <h1 className="text-2xl font-bold text-gray-100">{appTitle}</h1>
         <p className="text-sm text-gray-500 mt-1">
           This page does not represent the Ethereum network — it shows data from
           nodes that have opted in to share their information.

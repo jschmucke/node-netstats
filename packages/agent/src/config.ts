@@ -21,6 +21,7 @@ export const config = {
   rpcUrl: process.env.RPC_URL ?? `http://${process.env.RPC_HOST ?? 'localhost'}:${process.env.RPC_PORT ?? '8545'}`,
   verbosity: parseInt(process.env.VERBOSITY ?? '2', 10),
   nodeEnv: process.env.NODE_ENV ?? 'development',
+  nodeConsensus: process.env.NETWORK_CONSENSUS ?? 'pow',
 } as const;
 
 if (config.nodeEnv === 'production' && !process.env.INSTANCE_NAME) {
